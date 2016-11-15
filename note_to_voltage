@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+shock_time=200
+temp="$(mktemp)"
+file="$(cat)"
+
+# Convert Notes/sliders
+# TODO: better sliders? 
+echo "converting notes... " 1>&2
+#grep -E '^[0-9]*,[0-9]*,[0-9]*,[0-9],[0-9],[0-9]*:[0-9]*:[0-9]*:[0-9]*:' <<< "$file" | while read -r line
+grep -E '^[0-9]*,[0-9]*,[0-9]*,[14],' <<< "$file" | while read -r line
+do
+	[[ -z $last ]] && {
+		last=$line
+		read line
+	}
+
+	last_=(${last//,/ }) this_=(${line//,/ })
+	last_x=${last_[0]} last_y=${last_[1]}
+	this_x=${this_[0]} this_y=${this_[1]}
+	time=${this_[2]}
+
+	let diff_x=last_x-this_x
+	let diff_y=last_y-this_y
+
+	vlotage="$(bc <<< "scale=5; sqrt($diff_x*$diff_x+$diff_y*$diff_y)")"
+	[[ $vlotage == 0 ]] && vlotage=MAX
+	echo "${time}:$vlotage" >> $temp
+	echo "$(($time+$shock_time)):0" >> $temp
+	last=$line
+
+done
+
+# Convert Spinners
+echo "converting spanners... " 1>&2
+grep -E '^[0-9]*,[0-9]*,[0-9]*,12,[0-9],[0-9]*' <<< "$file" | while read -r line
+do
+	spinner=(${line//,/ })
+	sta=${spinner[2]}
+	end=${spinner[5]}
+	echo "$sta:MAX" >> $temp
+	echo "$end:0" >> $temp
+done
+
+max="$(cut -d":" -f2 < $temp | grep -v MAX | sort -nr | head -n1)"
+
+sort -t: -k1n < $temp | while read -r line
+do
+	line_=(${line//:/ })
+	voltage=${line_[1]}
+	[[ $voltage == MAX ]] && voltage=255 || voltage="$(bc <<< "scale=5; 255*($voltage/$max)")"
+	echo "${line_[0]}:${voltage%%.*}"
+done | tr -d ''
+
+rm $temp
