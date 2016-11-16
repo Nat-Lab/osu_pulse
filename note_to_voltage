@@ -8,7 +8,7 @@ file="$(cat)"
 # TODO: better sliders? 
 echo "converting notes... " 1>&2
 #grep -E '^[0-9]*,[0-9]*,[0-9]*,[0-9],[0-9],[0-9]*:[0-9]*:[0-9]*:[0-9]*:' <<< "$file" | while read -r line
-grep -E '^[0-9]*,[0-9]*,[0-9]*,[14],' <<< "$file" | while read -r line
+grep -E '^[0-9]*,[0-9]*,[0-9]*,[148],' <<< "$file" | while read -r line
 do
 	[[ -z $last ]] && {
 		last=$line
