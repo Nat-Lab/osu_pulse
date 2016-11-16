@@ -5,6 +5,10 @@ osu!pulse 是一個使用 osu! 圖譜生成低頻方波的工具。輸出文件�
 
 用法：
 
-./cat xxx.osu | ./note_to_voltage > xxx.txt
+# ./cat xxx.osu | ./note_to_voltage > xxx.txt # <- 不再使用這個。
+
+npm install osu-parser
+node node note_to_voltage_v2.js xxx.osu > xxx.txt
+
 ./make_audio.py xxx.txt xxx.wav sine    # 生成 sine 波形。
 ./make_audio.py xxx.txt xxx.wav digital # 生成数字输出。
