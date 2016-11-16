@@ -3,6 +3,12 @@ osu!pulse
 
 osu!pulse 是一個使用 osu! 圖譜生成低頻方波的工具。輸出文件是音頻文件，所以妳可以使用耳機輸出來操作諸如 LED，等外部設備。
 
+這裡有一個生成出來的示例：
+https://github.com/Nat-Lab/osu_pulse/blob/doc/sample.mp4
+Track #1: 原音樂
+Track #2: sine 波形輸出
+Track #3: 數字輸出
+
 用法：
 
 # ./cat xxx.osu | ./note_to_voltage > xxx.txt # <- 不再使用這個。
