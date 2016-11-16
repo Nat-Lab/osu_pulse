@@ -1,0 +1,9 @@
+osu!pulse
+==========
+
+osu!pulse 是一個使用 osu! 圖譜生成低頻方波的工具。輸出文件是音頻文件，所以妳可以使用耳機輸出來操作諸如 LED，等外部設備。
+
+用法：
+
+./cat xxx.osu | ./note_to_voltage > xxx.txt
+./make_audio.py xxx.txt xxx.wav
