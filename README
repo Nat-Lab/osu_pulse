@@ -1,7 +1,9 @@
 osu!pulse
 ==========
 
-osu!pulse 是一個使用 osu! 圖譜生成低頻方波的工具。輸出文件是音頻文件，所以妳可以使用耳機輸出來操作諸如 LED，等外部設備。
+osu!pulse 是一個使用 osu! 圖譜生成低頻方波的工具。輸出文件是音頻文件，所以妳可以使用耳機輸出來操作諸如 LED，等外部設備。你亦可以將它接上升壓電路。達到 50v ～ 80v 電壓。使用 EMS 電極將輸出接上肌肉，達到「自動 osu」的效果。
+
+對於 slider，程序會將其轉換成與 BPM 一致的脈衝。對於 Taiko 模式的中心與側邊，程序沒有區分。妳可以查看 note_to_voltage_v2.js 並修改。（例：對於側邊，輸出負電壓，使用濾波器分割，用於控制不同的設備。）
 
 這裡有一個生成出來的示例：
 https://github.com/Nat-Lab/osu_pulse/blob/doc/sample.mp4
@@ -9,12 +11,9 @@ Track #1: 原音樂
 Track #2: sine 波形輸出
 Track #3: 數字輸出
 
-用法：
+若要使用，請安裝 nodejs 與 python3。具體作法是：
 
-# ./cat xxx.osu | ./note_to_voltage > xxx.txt # <- 不再使用這個。
-
-npm install osu-parser
-node note_to_voltage_v2.js xxx.osu > xxx.txt
-
-./make_audio.py xxx.txt xxx.wav sine    # 生成 sine 波形。
-./make_audio.py xxx.txt xxx.wav digital # 生成數字輸出。
+$ npm install osu-parser                        # 安裝需要的庫。
+$ node note_to_voltage_v2.js xxx.osu > xxx.txt  # 生成時間-脈衝關係文件。
+$ ./make_audio.py xxx.txt xxx.wav sine          # 生成 sine 波形。
+$ ./make_audio.py xxx.txt xxx.wav digital       # 生成數字輸出。
